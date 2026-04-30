@@ -1,5 +1,5 @@
 function App() {
-  return <div>hi</div>;
+  return <div>سلام بر دوستان جان</div>;
 }
 
 export default App;

@@ -1,3 +1,5 @@
+@import url(font-face.css);
+
 :root {
   --text: #6b6375;
   --bg: #fff;
@@ -28,6 +30,12 @@
   min-height: 100svh;
 }
 
+* {
+  box-sizing: border-box;
+  font-family: KalamehWebFaNum, sans-serif;
+}
+
 body {
   margin: 0;
+  padding: 0;
 }
