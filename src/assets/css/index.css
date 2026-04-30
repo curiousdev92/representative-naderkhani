@@ -1,4 +1,5 @@
 @import url(font-face.css);
+@import "tailwindcss";
 
 :root {
   --text: #6b6375;
@@ -33,9 +34,20 @@
 * {
   box-sizing: border-box;
   font-family: KalamehWebFaNum, sans-serif;
+  outline: none;
 }
 
 body {
   margin: 0;
   padding: 0;
+  direction: rtl;
+}
+
+input,
+select {
+  @apply py-2.5 px-3 rounded-xl border-2 border-gray-200 focus:border-gray-500 hover:bg-gray-50 bg-white;
+
+  &:disabled {
+    @apply bg-gray-200;
+  }
 }

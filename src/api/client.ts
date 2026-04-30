@@ -1,25 +1,48 @@
+type QueryValue = string | number | boolean | null | undefined | Array<string | number | boolean>;
+type QueryParams = Record<string, QueryValue>;
+
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
-export async function GET<T>(url: string): Promise<T> {
-  const res = await fetch(`${BASE_URL}${url}`);
+function buildUrl(url: string, params?: QueryParams) {
+  const fullUrl = new URL(`${BASE_URL}${url}`, window.location.origin);
 
-  if (!res.ok) {
-    throw new Error("Request failed");
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+
+      if (Array.isArray(value)) {
+        value.forEach((item) => fullUrl.searchParams.append(key, String(item)));
+      } else {
+        fullUrl.searchParams.append(key, String(value));
+      }
+    });
   }
 
-  return await res.json();
+  return fullUrl.toString();
 }
 
-export async function POST<T>(url: string, body: unknown): Promise<T> {
-  const res = await fetch(`${BASE_URL}${url}`, {
+export async function GET<T>(url: string, params?: QueryParams): Promise<T> {
+  const res = await fetch(buildUrl(url, params));
+
+  if (!res.ok) {
+    throw new Error("GET request failed");
+  }
+
+  return res.json();
+}
+
+export async function POST<T>(url: string, body?: unknown, params?: QueryParams): Promise<T> {
+  const res = await fetch(buildUrl(url, params), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(body),
+    body: body ? JSON.stringify(body) : undefined,
   });
 
-  if (!res.ok) throw new Error("Request failed");
+  if (!res.ok) {
+    throw new Error("POST request failed");
+  }
 
-  return await res.json();
+  return res.json();
 }
