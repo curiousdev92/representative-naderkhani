@@ -2,15 +2,15 @@ import { Select } from "@mantine/core";
 import { ChevronDown } from "lucide-react";
 import type { FC } from "react";
 import { SIGNUP_TEXT } from "../../features/representative/signup.text";
-import type { ProvinceList } from "./types";
+import type { CountyList } from "./types";
 
 type PropTypes = {
-  data?: ProvinceList;
+  data?: CountyList;
   isLoading: boolean;
-  onSelect: (provinceId: string) => void;
+  onSelect: (countyId: string) => void;
 };
 
-const ProvinceSelect: FC<PropTypes> = (props) => {
+const CountySelect: FC<PropTypes> = (props) => {
   const { data, isLoading, onSelect } = props;
   const selectionData = data
     ? data?.map((d) => ({ value: String(d.id), label: d.name }))
@@ -22,14 +22,15 @@ const ProvinceSelect: FC<PropTypes> = (props) => {
 
   return (
     <Select
-      label={SIGNUP_TEXT.province_label}
+      label={SIGNUP_TEXT.county_label}
       data={selectionData}
-      placeholder={SIGNUP_TEXT.province_placeholder}
+      placeholder={SIGNUP_TEXT.county_placeholder}
       loading={isLoading}
       onChange={handleChange}
       rightSection={<ChevronDown size={16} />}
+      disabled={!data}
     />
   );
 };
 
-export default ProvinceSelect;
+export default CountySelect;
