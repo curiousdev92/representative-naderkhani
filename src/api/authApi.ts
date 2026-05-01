@@ -1,7 +1,7 @@
 import { POST } from "./client";
 import { ENDPOINTS } from "./endpoints";
 
-export type ErrorResponseType = {
+export type ResponseType<T> = {
   error_details: {
     type: string;
     code: string;
@@ -11,8 +11,8 @@ export type ErrorResponseType = {
   };
   is_success: boolean;
   message: string;
-  response: string;
   status_code: number;
+  response?: T;
 };
 export const checkAgencyCode = (code: string) =>
   POST(ENDPOINTS.dey.checkAgencyCode, { agent_code: code });
