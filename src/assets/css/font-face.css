@@ -1,6 +1,6 @@
 @font-face {
-  font-family: KalamehWebFaNum;
+  font-family: IRANYekanXFaNum;
   font-style: normal;
-  font-weight: 500;
-  src: url("/src/assets/fonts/KalamehWebFaNum-Medium.woff2") format("woff2");
+  font-weight: 400;
+  src: url("/src/assets/fonts/IRANYekanXFaNum-Regular.woff2") format("woff2");
 }
