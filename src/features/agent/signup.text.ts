@@ -1,6 +1,6 @@
 export const SIGNUP_TEXT = {
-  representation_code_label: "کد نمایندگی",
-  representation_code_placeholder: "کد نمایندگی را وارد کنید",
+  agent_code_label: "کد نمایندگی",
+  agent_code_placeholder: "کد نمایندگی را وارد کنید",
   province_label: "استان",
   province_placeholder: "استان را انتخاب کنید",
   county_label: "شهر",
@@ -12,7 +12,7 @@ export const SIGNUP_TEXT = {
   phone_placeholder: "XXX-XXX",
   prefix_label: "پیش‌شماره",
   prefix_placeholder: "021",
-  representation_type: "نوع نمایندگی",
+  agent_type: "نوع نمایندگی",
   genuine: "حقیقی",
   legal: "حقوقی",
   register: "ثبت‌نام",

@@ -1,9 +1,9 @@
 import { createTheme, DirectionProvider, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { Notifications } from "@mantine/notifications";
-import '@mantine/notifications/styles.css';
+import "@mantine/notifications/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import SignupForm from "./features/representative/signup";
+import SignupForm from "./features/agent/signup";
 
 const queryClient = new QueryClient();
 

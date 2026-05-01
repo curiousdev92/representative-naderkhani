@@ -1,7 +1,7 @@
 import { Select } from "@mantine/core";
 import { ChevronDown } from "lucide-react";
 import type { FC } from "react";
-import { SIGNUP_TEXT } from "../../features/representative/signup.text";
+import { SIGNUP_TEXT } from "../../features/agent/signup.text";
 import type { CountyList } from "./types";
 
 type PropTypes = {

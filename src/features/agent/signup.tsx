@@ -53,16 +53,14 @@ const SignupForm: FC<PropTypes> = (props) => {
     setFormData((prev) => ({ ...prev, countyId }));
   };
 
-  // console.log(formData);
-
   return (
     <form className="flex flex-col gap-4 max-w-2xs shadow p-4 rounded-lg mx-auto">
       <TextInput
         id="code"
         name="code"
         type="number"
-        placeholder={SIGNUP_TEXT.representation_code_placeholder}
-        label={SIGNUP_TEXT.representation_code_label}
+        placeholder={SIGNUP_TEXT.agent_code_placeholder}
+        label={SIGNUP_TEXT.agent_code_label}
         onChange={handleCodeChange}
       />
       <ProvinceSelect
