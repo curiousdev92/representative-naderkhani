@@ -12,8 +12,9 @@ export const SIGNUP_TEXT = {
   phone_placeholder: "XXX-XXX",
   prefix_label: "پیش‌شماره",
   prefix_placeholder: "021",
-  agent_type: "نوع نمایندگی",
-  genuine: "حقیقی",
+  agency_type: "نوع نمایندگی",
+  real: "حقیقی",
   legal: "حقوقی",
   register: "ثبت‌نام",
+  agency_name: "نام نمایندگی",
 };

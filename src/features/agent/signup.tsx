@@ -1,56 +1,42 @@
+import { Button } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { type ChangeEventHandler, type FC } from "react";
-import type { ResponseType } from "../../api/authApi";
-import type { ApiError } from "../../api/client";
+import { useState, type ChangeEventHandler, type FC, type SubmitEventHandler } from "react";
+import { signup } from "../../api/authApi";
 import CountySelect from "../../components/CountySelect";
 import InsuranceBranchSelect from "../../components/InsuranceBranchSelect";
 import ProvinceSelect from "../../components/ProvinceSelect";
-import { useAgentCode } from "../../hooks/useAgentCode";
-import { useProvinces } from "../../hooks/useProvinces";
+import AgencyTypeField from "./agency-type-field";
 import AgentAdressInput from "./agent-address-input";
 import AgentCodeInput from "./agent-code-input";
+import { SIGNUP_TEXT } from "./signup.text";
 
 type PropTypes = {};
 
 const SignupForm: FC<PropTypes> = (props) => {
   const {} = props;
   const [formData, setFormData] = useDebouncedState<{
-    provinceId?: string;
+    province?: string;
     countyId?: string;
-    agentCode?: string;
+    agent_code?: string;
   }>({}, 500);
-
-  const { data: provinceData, isLoading: provinceLoading } = useProvinces();
-
-  const query = useAgentCode(formData.agentCode);
-
-  if (query.isError) {
-    const err = query.error as ApiError<ResponseType<string>>;
-    const agentExist = err?.response?.error_details?.code === "agent_code_unique";
-
-    if (agentExist) {
-      const agentError = err?.response?.error_details.fa_details;
-      notifications.show({
-        title: "خطا",
-        message: agentError,
-        color: "red",
-        position: "top-right",
-      });
-    }
-  }
+  const [loading, setLoading] = useState(false);
 
   const handleCodeChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
     const code = e.target.value;
-    setFormData((prev) => ({ ...prev, agentCode: code }));
+    setFormData((prev) => ({ ...prev, agent_code: code }));
   };
 
   const handleSelectProvince = (provinceId: string) => {
-    setFormData((prev) => ({ ...prev, provinceId }));
+    setFormData((prev) => ({ ...prev, province: provinceId }));
   };
 
   const handleSelectCounty = (countyId: string) => {
-    setFormData((prev) => ({ ...prev, countyId }));
+    setFormData((prev) => ({ ...prev, county: countyId }));
+  };
+
+  const handleSelectBranch = (branchId: string) => {
+    setFormData((prev) => ({ ...prev, insurance_branch: branchId }));
   };
 
   const handleAddressChange: ChangeEventHandler<HTMLTextAreaElement> = async (e) => {
@@ -58,17 +44,61 @@ const SignupForm: FC<PropTypes> = (props) => {
     setFormData((prev) => ({ ...prev, address }));
   };
 
+  const handleAgencyNameChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const name = e.target.value;
+    setFormData((prev) => ({ ...prev, name }));
+  };
+
+  const handleFormSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const fields = Object.fromEntries(fd.entries());
+    const body = {
+      ...fields,
+      ...formData,
+      first_name: "محمد",
+      last_name: "نادرخانی",
+      phone_number: "09600153609",
+      city_code: "021",
+      phone: "22222222",
+    };
+    setLoading(true);
+
+    /**@todo error handling should be done */
+    try {
+      await signup(body);
+      notifications.show({
+        title: "موفق",
+        message: "با موفقیت ثبت شد",
+        color: "green",
+        position: "top-right",
+      });
+    } catch (error) {
+      notifications.show({
+        title: "خطا",
+        message: "لطفا دوباره امتحان کنید",
+        color: "red",
+        position: "top-right",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <form className="flex flex-col gap-4 max-w-2xs shadow p-4 rounded-lg mx-auto">
+    <form
+      className="flex flex-col gap-4 max-w-96 shadow p-4 rounded-lg mx-auto"
+      onSubmit={handleFormSubmit}
+    >
       <AgentCodeInput handleChange={handleCodeChange} />
-      <ProvinceSelect
-        data={provinceData}
-        isLoading={provinceLoading}
-        onSelect={handleSelectProvince}
-      />
-      <CountySelect provinceId={formData?.provinceId} onSelect={handleSelectCounty} />
+      <ProvinceSelect onSelect={handleSelectProvince} />
+      <CountySelect provinceId={formData?.province} onSelect={handleSelectCounty} />
       <AgentAdressInput handleChange={handleAddressChange} />
-      <InsuranceBranchSelect provinceId={formData?.provinceId} onSelect={handleSelectCounty} />
+      <InsuranceBranchSelect provinceId={formData?.province} onSelect={handleSelectBranch} />
+      <AgencyTypeField handleChange={handleAgencyNameChange} />
+      <Button type="submit" size="md" loading={loading}>
+        {SIGNUP_TEXT.register}
+      </Button>
     </form>
   );
 };

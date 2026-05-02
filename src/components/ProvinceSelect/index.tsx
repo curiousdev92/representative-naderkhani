@@ -2,16 +2,15 @@ import { Select } from "@mantine/core";
 import { ChevronDown } from "lucide-react";
 import type { FC } from "react";
 import { SIGNUP_TEXT } from "../../features/agent/signup.text";
-import type { ProvinceList } from "./types";
+import { useProvinces } from "../../hooks/useProvinces";
 
 type PropTypes = {
-  data?: ProvinceList;
-  isLoading: boolean;
   onSelect: (provinceId: string) => void;
 };
 
 const ProvinceSelect: FC<PropTypes> = (props) => {
-  const { data, isLoading, onSelect } = props;
+  const { onSelect } = props;
+  const { data, isLoading } = useProvinces();
   const selectionData = data
     ? data?.map((d) => ({ value: String(d.id), label: d.name }))
     : ["loading"];
